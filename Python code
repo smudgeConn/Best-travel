@@ -1,0 +1,35 @@
+def choose_best_sum(t, k, ls):
+    sums = []
+    
+    def n_length_combo(list, number):
+        if number == 0:
+            return [[]]
+        combo_list =[]
+        for i in range(0, len(list)):
+            main_number = list[i]
+            remLst = list[i + 1:]
+            remainlst_combo = n_length_combo(remLst, number-1)
+            for p in remainlst_combo:
+                 combo_list.append([main_number, *p])
+        return combo_list
+    
+    combos = n_length_combo(ls, k)
+    
+    for combo in combos:
+        sum = 0
+        for number in combo:
+            sum += number
+        sums.append(sum)
+
+    sums.sort()
+    
+    if len(sums) > 0 and sums[0] > t:
+        return None
+    
+    for i, number in enumerate(sums):
+        if number == t:
+            return number
+        elif number > t:
+            return sums[i-1]
+        elif i+1 == len(sums):
+            return sums[-1]
